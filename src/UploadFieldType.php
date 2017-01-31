@@ -1,5 +1,6 @@
 <?php namespace Anomaly\UploadFieldType;
 
+use Anomaly\FilesModule\File\Command\GetFile;
 use Anomaly\FilesModule\File\Contract\FileInterface;
 use Anomaly\Streams\Platform\Addon\FieldType\FieldType;
 use Anomaly\UploadFieldType\Command\GetUploadFile;
@@ -142,6 +143,21 @@ class UploadFieldType extends FieldType
     public function getPostValue($default = null)
     {
         return $this->dispatch(new PerformUpload($this));
+    }
+
+    /**
+     * Get the post value for repopulating
+     * field after validation has failed.
+     *
+     * In this case just return the ID
+     * of any existing value file.
+     *
+     * @param  null $default
+     * @return mixed
+     */
+    public function getOldValue($default = null)
+    {
+        return $this->dispatch(new GetFile(array_get($_POST, $this->getInputName() . '_id')));
     }
 
     /**
