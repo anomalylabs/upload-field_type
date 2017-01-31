@@ -146,7 +146,7 @@ class UploadFieldType extends FieldType
     }
 
     /**
-     * Get the post value for repopulating
+     * Get the value intended for repopulating
      * field after validation has failed.
      *
      * In this case just return the ID
@@ -155,9 +155,9 @@ class UploadFieldType extends FieldType
      * @param  null $default
      * @return mixed
      */
-    public function getOldValue($default = null)
+    public function getRepopulateValue($default = null)
     {
-        return $this->dispatch(new GetFile(array_get($_POST, $this->getInputName() . '_id')));
+        return $this->dispatch(new GetFile(array_get($_POST, $this->getInputName() . '_id', $default)));
     }
 
     /**

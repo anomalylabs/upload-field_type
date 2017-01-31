@@ -36,7 +36,7 @@ class UploadFieldTypeModifier extends FieldTypeModifier
      * Modify the value for database storage.
      *
      * @param  $value
-     * @return int
+     * @return int|null
      */
     public function modify($value)
     {
@@ -45,7 +45,7 @@ class UploadFieldTypeModifier extends FieldTypeModifier
         }
 
         if ($value && $file = $this->files->find($value)) {
-            return $file;
+            return $file->getId();
         }
 
         return null;
@@ -63,6 +63,7 @@ class UploadFieldTypeModifier extends FieldTypeModifier
             return $value;
         }
 
+        /* @var FileInterface $file */
         if ($value && $file = $this->files->find($value)) {
             return $file;
         }
