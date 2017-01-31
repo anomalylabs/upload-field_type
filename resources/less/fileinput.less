@@ -2,10 +2,16 @@
 // File input
 // --------------------------------------------------
 
+.upload-field_type {
+
+    .view-file {
+        font-size: 10px;
+    }
+}
+
 .btn-file {
     overflow: hidden;
     position: relative;
-    //vertical-align: middle;
 
     > input[type="file"] {
         position: absolute;
@@ -21,26 +27,26 @@
         height: 100%;
         outline: 0;
         filter: e(%("alpha(opacity=%d)", 0));
-        -khtml-opacity: 0;
         -moz-opacity: 0;
         opacity: 0;
     }
 }
 
 .fileinput {
-    margin-bottom: 3px;
-    display: block;
     overflow: hidden;
+    margin-bottom: 3px;
 
     .form-control {
         display: inline-block;
         margin-bottom: 0;
         cursor: text;
     }
+
     .input-group-addon {
         padding-top: 8px;
         padding-bottom: 8px;
     }
+
     .thumbnail {
         overflow: hidden;
         display: inline-block;
@@ -50,9 +56,14 @@
             max-height: 100%;
         }
     }
+
     .uneditable-input [class^="fui-"] {
         margin-right: .3em;
     }
+}
+
+.fileinput-exists {
+    cursor: pointer;
 }
 
 .fileinput-exists .fileinput-new,
@@ -74,12 +85,12 @@
 }
 
 .fileinput.input-group {
-    display: table;
 
     > * {
         position: relative;
         z-index: 1;
     }
+
     > .btn-file {
         z-index: 1;
     }
@@ -130,4 +141,9 @@
 
 .input-group-addon:not(:first-child) {
     border-left: 0;
+}
+
+.input-group-addon:last-of-type {
+    border-top-right-radius: 0.17rem;
+    border-bottom-right-radius: 0.17rem;
 }

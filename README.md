@@ -1,6 +1,6 @@
-# File Field Type
+# Upload Field Type
 
-*anomaly.field_type.file*
+*anomaly.field_type.upload*
 
 #### A file upload field type.
 

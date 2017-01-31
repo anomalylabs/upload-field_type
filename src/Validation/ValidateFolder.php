@@ -1,39 +1,39 @@
 <?php namespace Anomaly\UploadFieldType\Validation;
 
-use Anomaly\FilesModule\Disk\Contract\DiskRepositoryInterface;
+use Anomaly\FilesModule\Folder\Contract\FolderRepositoryInterface;
 use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
 use Illuminate\Contracts\Bus\SelfHandling;
 
 /**
- * Class ValidateDisk
+ * Class ValidateFolder
  *
  * @link          http://anomaly.is/streams-platform
  * @author        AnomalyLabs, Inc. <hello@anomaly.is>
  * @author        Ryan Thompson <ryan@anomaly.is>
  * @package       Anomaly\UploadFieldType\Validation
  */
-class ValidateDisk implements SelfHandling
+class ValidateFolder implements SelfHandling
 {
 
     /**
      * Handle the validation.
      *
-     * @param FormBuilder             $builder
-     * @param DiskRepositoryInterface $disks
-     * @param                         $attribute
+     * @param FormBuilder               $builder
+     * @param FolderRepositoryInterface $folders
+     * @param                           $attribute
      * @return bool
      */
-    public function handle(FormBuilder $builder, DiskRepositoryInterface $disks, $attribute)
+    public function handle(FormBuilder $builder, FolderRepositoryInterface $folders, $attribute)
     {
         $fieldType = $builder->getFormField($attribute);
 
-        $disk = array_get($fieldType->getConfig(), 'disk');
+        $folder = array_get($fieldType->getConfig(), 'folder');
 
-        if (is_numeric($disk) && !$disks->find($disk)) {
+        if (is_numeric($folder) && !$folders->find($folder)) {
             return false;
         }
 
-        if (!is_numeric($disk) && !$disks->findBySlug($disk)) {
+        if (!is_numeric($folder) && !$folders->findBySlug($folder)) {
             return false;
         }
 

@@ -1,10 +1,10 @@
 <?php namespace Anomaly\UploadFieldType;
 
-use Anomaly\UploadFieldType\Command\GetUploadFile;
-use Anomaly\UploadFieldType\Command\PerformUpload;
-use Anomaly\UploadFieldType\Validation\ValidateDisk;
 use Anomaly\FilesModule\File\Contract\FileInterface;
 use Anomaly\Streams\Platform\Addon\FieldType\FieldType;
+use Anomaly\UploadFieldType\Command\GetUploadFile;
+use Anomaly\UploadFieldType\Command\PerformUpload;
+use Anomaly\UploadFieldType\Validation\ValidateFolder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -30,7 +30,7 @@ class UploadFieldType extends FieldType
      *
      * @var string
      */
-    protected $inputView = 'anomaly.field_type.file::input';
+    protected $inputView = 'anomaly.field_type.upload::input';
 
     /**
      * The field type rules.
@@ -38,7 +38,7 @@ class UploadFieldType extends FieldType
      * @var array
      */
     protected $rules = [
-        'valid_disk'
+        'valid_folder',
     ];
 
     /**
@@ -47,10 +47,10 @@ class UploadFieldType extends FieldType
      * @var array
      */
     protected $validators = [
-        'valid_disk' => [
-            'handler' => ValidateDisk::class,
-            'message' => 'anomaly.field_type.file::validation.valid_disk'
-        ]
+        'valid_folder' => [
+            'handler' => ValidateFolder::class,
+            'message' => 'anomaly.field_type.upload::validation.valid_folder',
+        ],
     ];
 
     /**
@@ -59,7 +59,7 @@ class UploadFieldType extends FieldType
      * @var array
      */
     protected $config = [
-        'disk' => 'uploads'
+        'disk' => 'uploads',
     ];
 
     /**
@@ -91,7 +91,7 @@ class UploadFieldType extends FieldType
         }
 
         if ($mimes = array_get($this->getConfig(), 'mimes')) {
-            
+
             if (in_array('jpg', $mimes) || in_array('jpeg', $mimes)) {
                 $mimes = array_unique(array_merge($mimes, ['jpg', 'jpeg']));
             }
@@ -156,16 +156,6 @@ class UploadFieldType extends FieldType
     }
 
     /**
-     * Get the database column name.
-     *
-     * @return null|string
-     */
-    public function getColumnName()
-    {
-        return parent::getColumnName() . '_id';
-    }
-
-    /**
      * Return the required flag.
      *
      * @return bool
@@ -177,5 +167,15 @@ class UploadFieldType extends FieldType
         }
 
         return parent::isRequired();
+    }
+
+    /**
+     * Get the database column name.
+     *
+     * @return null|string
+     */
+    public function getColumnName()
+    {
+        return parent::getColumnName() . '_id';
     }
 }

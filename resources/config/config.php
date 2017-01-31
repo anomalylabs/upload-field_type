@@ -1,26 +1,24 @@
 <?php
 
+use Anomaly\FilesModule\Folder\Contract\FolderRepositoryInterface;
+
 return [
-    'disk'  => [
-        'type'     => 'anomaly.field_type.relationship',
+    'folder' => [
         'required' => true,
+        'type'     => 'anomaly.field_type.select',
         'config'   => [
-            'related' => 'Anomaly\FilesModule\Disk\DiskModel'
-        ]
+            'options' => function (FolderRepositoryInterface $folders) {
+                return $folders->all()->pluck('name', 'id')->all();
+            },
+        ],
     ],
-    'path'  => [
-        'type'  => 'anomaly.field_type.text',
-        'rules' => [
-            'regex:/^[a-zA-Z0-9_\s\/]+$/'
-        ]
+    'image'  => [
+        'type' => 'anomaly.field_type.boolean',
     ],
-    'image' => [
-        'type' => 'anomaly.field_type.boolean'
+    'mimes'  => [
+        'type' => 'anomaly.field_type.tags',
     ],
-    'mimes' => [
-        'type' => 'anomaly.field_type.tags'
-    ],
-    'max'   => [
+    'max'    => [
         'type'     => 'anomaly.field_type.integer',
         'required' => true,
         'config'   => [
@@ -36,7 +34,7 @@ return [
 
                 return $file > $post ? $post : $file;
             },
-            'min'           => 1
-        ]
-    ]
+            'min'           => 1,
+        ],
+    ],
 ];

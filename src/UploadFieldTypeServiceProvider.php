@@ -19,7 +19,7 @@ class UploadFieldTypeServiceProvider extends AddonServiceProvider
      * @var array
      */
     protected $singletons = [
-        'Anomaly\UploadFieldType\UploadFieldTypeModifier' => 'Anomaly\UploadFieldType\UploadFieldTypeModifier'
+        'Anomaly\UploadFieldType\UploadFieldTypeModifier' => 'Anomaly\UploadFieldType\UploadFieldTypeModifier',
     ];
 
 }

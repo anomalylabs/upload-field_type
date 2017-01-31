@@ -1,10 +1,11 @@
-{{ asset_add('styles.css', 'anomaly.field_type.file::less/fileinput.less') }}
-{{ asset_add('scripts.js', 'anomaly.field_type.file::js/fileinput.min.js') }}
-{{ asset_add('scripts.js', 'anomaly.field_type.file::js/input.js') }}
+{{ asset_add('styles.css', 'anomaly.field_type.upload::less/fileinput.less') }}
+{{ asset_add('scripts.js', 'anomaly.field_type.upload::js/fileinput.min.js') }}
+{{ asset_add('scripts.js', 'anomaly.field_type.upload::js/input.js') }}
 
 <div class="fileinput fileinput-{{ field_type.value ? 'exists' : 'new' }} input-group" data-provides="fileinput">
+
     <div class="form-control" data-trigger="fileinput">
-        <i class="glyphicons glyphicons-paperclip fileinput-exists"></i>
+        <i class="fa fa-paperclip fileinput-exists"></i>
         <span class="fileinput-filename">
             {{ field_type.value.name }}
         </span>
@@ -12,22 +13,23 @@
 
     <span class="input-group-addon btn btn-default btn-file">
         <span class="fileinput-new">
-            {{ trans('anomaly.field_type.file::button.select_file') }}
+            {{ trans('anomaly.field_type.upload::button.select_file') }}
         </span>
-        <span class="fileinput-exists">
-            {{ trans('anomaly.field_type.file::button.change') }}
+        <span class="fileinput-exists change-file">
+            {{ trans('anomaly.field_type.upload::button.change') }}
         </span>
         <input type="hidden" name="{{ field_type.input_name }}_id" value="{{ field_type.value.id }}">
         <input type="file" name="{{ field_type.input_name }}">
     </span>
 
-    <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">
-        {{ trans('anomaly.field_type.file::button.remove') }}
+    <a href="#" class="input-group-addon fileinput-exists btn btn-danger" data-dismiss="fileinput">
+        {{ trans('anomaly.field_type.upload::button.remove') }}
     </a>
+
 </div>
 
 {% if field_type.value %}
-    <a href="{{ url(field_type.value.public_path) }}" class="small" target="_blank">
-        {{ url(field_type.value.public_path) }}
+    <a href="{{ url(field_type.value.route('view')) }}" class="view-file text-muted" target="_blank">
+        {{ url(field_type.value.location()) }}
     </a>
 {% endif %}

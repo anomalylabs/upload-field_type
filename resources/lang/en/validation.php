@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'valid_disk' => 'The configured upload disk for :attribute does not exist.'
+    'valid_folder' => 'The configured upload folder for :attribute does not exist.',
 ];

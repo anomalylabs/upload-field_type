@@ -1,11 +1,10 @@
 <?php namespace Anomaly\UploadFieldType\Command;
 
-use Anomaly\UploadFieldType\UploadFieldType;
-use Anomaly\UploadFieldType\UploadFieldTypeParser;
-use Anomaly\FilesModule\Disk\Contract\DiskRepositoryInterface;
 use Anomaly\FilesModule\File\Contract\FileInterface;
 use Anomaly\FilesModule\File\Contract\FileRepositoryInterface;
-use Illuminate\Contracts\Bus\SelfHandling;
+use Anomaly\FilesModule\Folder\Command\GetFolder;
+use Anomaly\UploadFieldType\UploadFieldType;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
 use League\Flysystem\MountManager;
 
@@ -17,8 +16,10 @@ use League\Flysystem\MountManager;
  * @author        Ryan Thompson <ryan@anomaly.is>
  * @package       Anomaly\UploadFieldType\Command
  */
-class PerformUpload implements SelfHandling
+class PerformUpload
 {
+
+    use DispatchesJobs;
 
     /**
      * The field type instance.
@@ -40,51 +41,46 @@ class PerformUpload implements SelfHandling
     /**
      * Handle the command.
      *
-     * @param DiskRepositoryInterface $disks
      * @param FileRepositoryInterface $files
-     * @param UploadFieldTypeParser     $parser
-     * @param Request                 $request
      * @param MountManager            $manager
+     * @param Request                 $request
      *
-     * @return null|bool|FileInterface
+     * @return null|FileInterface
      */
-    public function handle(
-        DiskRepositoryInterface $disks,
-        FileRepositoryInterface $files,
-        UploadFieldTypeParser $parser,
-        Request $request,
-        MountManager $manager
-    ) {
-        $path = trim(array_get($this->fieldType->getConfig(), 'path'), './');
-
-        $file  = $request->file($this->fieldType->getInputName());
-        $value = $request->get($this->fieldType->getInputName() . '_id');
+    public function handle(FileRepositoryInterface $files, MountManager $manager, Request $request)
+    {
+        $upload = $request->file($this->fieldType->getInputName());
+        $value  = $request->get($this->fieldType->getInputName() . '_id');
 
         /**
          * Make sure we have at least
          * some kind of input.
          */
-        if ($file === null) {
+        if ($upload == null) {
 
             if (!$value) {
                 return null;
             }
 
-            return $files->find($value);
-        }
-
-        // Make sure we have a valid upload disk. First by slug.
-        if (!$disk = $disks->findBySlug($slug = array_get($this->fieldType->getConfig(), 'disk'))) {
-            // If that fails look up by id.
-            if (!$disk = $disks->find($id = array_get($this->fieldType->getConfig(), 'disk'))) {
-                return null;
+            /* @var FileInterface $file */
+            if ($file = $files->find($value)) {
+                return $file;
             }
+
+            return null;
         }
 
-        // Make the path.
-        $path = $parser->parse($path, $this->fieldType);
-        $path = (!empty($path) ? $path . '/' : null) . $upload->getClientOriginalName();
+        // Make sure we have a valid upload folder. First by slug.
+        if (!$folder = $this->dispatch(new GetFolder($this->fieldType->config('folder')))) {
+            return null;
+        }
 
-        return $manager->putStream($disk->path($path), fopen($upload->getRealPath(), 'r+'));
+        // Write the file.
+        $file = $manager->putStream(
+            $folder->path($upload->getClientOriginalName()),
+            fopen($upload->getRealPath(), 'r+')
+        );
+
+        return $file;
     }
 }
