@@ -6,18 +6,19 @@
 
 The file file type provides a file input that uploads to the Files module.
 
-#### use with contact form
+#### Example
 
-Don't forget to config folder
+Using the contact form plugin:
 
 ```
 {{ form('contact').fields({
 	'name': {
-		'label': 'CV',
 		'required': true,
-		'type':'anomaly.field_type.upload',
-		'config' :{
+		'label': 'REsume',
+		'type': 'anomaly.field_type.upload',
+		'config' : {
 			'folder':'uploads'
 		}
 	}
-})|raw }}```
+})|raw }}
+```
