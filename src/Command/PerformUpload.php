@@ -75,9 +75,12 @@ class PerformUpload
             return null;
         }
 
+        // Get a unique filename just in case there is one already in the filesystem.
+        $filename = $this->dispatch(new GetUniqueFilename($manager, $folder, $upload));
+
         // Write the file.
         $file = $manager->putStream(
-            $folder->path($upload->getClientOriginalName()),
+            $folder->path($filename),
             fopen($upload->getRealPath(), 'r+')
         );
 
