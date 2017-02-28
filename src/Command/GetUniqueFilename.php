@@ -31,6 +31,11 @@ class GetUniqueFilename
         $this->upload  = $upload;
     }
 
+    /**
+     * Get a unique filename from the mount manager.
+     *
+     * @return mixed|null|string
+     */
     public function handle()
     {
         // Store the parts of the file we will need to make a unique filename.
