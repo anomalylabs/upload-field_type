@@ -2,17 +2,15 @@
 
 use Anomaly\FilesModule\Folder\Contract\FolderRepositoryInterface;
 use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
-use Illuminate\Contracts\Bus\SelfHandling;
 
 /**
  * Class ValidateFolder
  *
- * @link          http://anomaly.is/streams-platform
- * @author        AnomalyLabs, Inc. <hello@anomaly.is>
- * @author        Ryan Thompson <ryan@anomaly.is>
- * @package       Anomaly\UploadFieldType\Validation
+ * @link   http://pyrocms.com/
+ * @author PyroCMS, Inc. <support@pyrocms.com>
+ * @author Ryan Thompson <ryan@pyrocms.com>
  */
-class ValidateFolder implements SelfHandling
+class ValidateFolder
 {
 
     /**

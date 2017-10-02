@@ -7,9 +7,9 @@ use League\Flysystem\MountManager;
 /**
  * Class GetUniqueFilename
  *
- * @link    http://fritzandandre.com
- * @author  Brennon Loveless <brennon@fritzandandre.com>
- * @package Anomaly\UploadFieldType\Command
+ * @link   http://pyrocms.com/
+ * @author PyroCMS, Inc. <support@pyrocms.com>
+ * @author Ryan Thompson <ryan@pyrocms.com>
  */
 class GetUniqueFilename
 {

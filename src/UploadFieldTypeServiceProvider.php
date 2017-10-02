@@ -5,10 +5,9 @@ use Anomaly\Streams\Platform\Addon\AddonServiceProvider;
 /**
  * Class UploadFieldTypeServiceProvider
  *
- * @link          http://anomaly.is/streams-platform
- * @author        AnomalyLabs, Inc. <hello@anomaly.is>
- * @author        Ryan Thompson <ryan@anomaly.is>
- * @package       Anomaly\UploadFieldType
+ * @link   http://pyrocms.com/
+ * @author PyroCMS, Inc. <support@pyrocms.com>
+ * @author Ryan Thompson <ryan@pyrocms.com>
  */
 class UploadFieldTypeServiceProvider extends AddonServiceProvider
 {
@@ -19,7 +18,7 @@ class UploadFieldTypeServiceProvider extends AddonServiceProvider
      * @var array
      */
     protected $singletons = [
-        'Anomaly\UploadFieldType\UploadFieldTypeModifier' => 'Anomaly\UploadFieldType\UploadFieldTypeModifier',
+        UploadFieldTypeModifier::class => UploadFieldTypeModifier::class,
     ];
 
 }
