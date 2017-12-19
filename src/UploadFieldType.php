@@ -5,6 +5,7 @@ use Anomaly\FilesModule\File\Contract\FileInterface;
 use Anomaly\Streams\Platform\Addon\FieldType\FieldType;
 use Anomaly\UploadFieldType\Command\GetUploadFile;
 use Anomaly\UploadFieldType\Command\PerformUpload;
+use Anomaly\UploadFieldType\Table\ValueTableBuilder;
 use Anomaly\UploadFieldType\Validation\ValidateFolder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -18,6 +19,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class UploadFieldType extends FieldType
 {
+
+    /**
+     * The default input class.
+     *
+     * @var string
+     */
+    protected $class = '';
 
     /**
      * The underlying database column type

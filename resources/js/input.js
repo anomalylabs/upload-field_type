@@ -1,11 +1,21 @@
-$(document).on('ajaxComplete ready', function () {
+(function (window, document) {
 
-    // Initialize file inputs
-    $('.upload-field_type [data-dismiss="fileinput"]:not([data-initialized])').each(function () {
+    let fields = Array.from(
+        document.querySelectorAll('input[data-provides="anomaly.field_type.upload"]')
+    );
 
-        $(this).attr('data-initialized', '').on('click', function () {
-            $(this).closest('.fileinput').find('input').val('');
-            $(this).closest('.upload-field_type').find('.view-file').remove();
+    fields.forEach(function (field) {
+
+        let wrapper = field.closest('div');
+        let attachment = wrapper.querySelector('.attachment');
+        let file = wrapper.querySelector('input[type="hidden"]');
+        let remove = wrapper.querySelector('[data-remove="upload"]');
+
+        remove.addEventListener('click', function (event) {
+
+            file.value = '';
+
+            attachment.remove();
         });
     });
-});
+})(window, document);

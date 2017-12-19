@@ -1,35 +1,69 @@
-{{ asset_add('styles.css', 'anomaly.field_type.upload::less/fileinput.less') }}
-{{ asset_add('scripts.js', 'anomaly.field_type.upload::js/fileinput.min.js') }}
+{{ asset_add('styles.css', 'anomaly.field_type.upload::scss/input.scss') }}
 {{ asset_add('scripts.js', 'anomaly.field_type.upload::js/input.js') }}
 
-<div class="fileinput fileinput-{{ field_type.value ? 'exists' : 'new' }} input-group" data-provides="fileinput">
+<input
+        type="file"
+        name="{{ field_type.input_name }}"
+        {{ html_attributes(field_type.attributes) }}
+        {{ field_type.disabled ? 'disabled' }}
+        {{ field_type.readonly ? 'readonly' }}>
 
-    <div class="form-control" data-trigger="fileinput">
-        <i class="fa fa-paperclip fileinput-exists"></i>
-        <span class="fileinput-filename">
-            {{ field_type.value.name }}
-        </span>
-    </div>
-
-    <span class="input-group-addon btn btn-default btn-file">
-        <span class="fileinput-new">
-            {{ trans('anomaly.field_type.upload::button.select_file') }}
-        </span>
-        <span class="fileinput-exists change-file">
-            {{ trans('anomaly.field_type.upload::button.change') }}
-        </span>
-        <input type="hidden" name="{{ field_type.input_name }}_id" value="{{ field_type.value.id }}">
-        <input type="file" name="{{ field_type.input_name }}">
-    </span>
-
-    <a href="#" class="input-group-addon fileinput-exists btn btn-danger" data-dismiss="fileinput">
-        {{ trans('anomaly.field_type.upload::button.remove') }}
-    </a>
-
-</div>
+<input
+        type="hidden"
+        name="{{ field_type.input_name }}_id"
+        value="{{ field_type.value.id }}"
+        {{ field_type.disabled ? 'disabled' }}
+        {{ field_type.readonly ? 'readonly' }}>
 
 {% if field_type.value %}
-    <a href="{{ url(field_type.value.route('view')) }}" class="view-file text-muted" target="_blank">
-        {{ url(field_type.value.location()) }}
-    </a>
+    <div>
+
+        <div class="attachment">
+
+            <div class="preview">
+                <a href="{{ url(field_type.value.route('view')) }}" target="_blank">
+                    {{ field_type.value.preview|raw }}
+                </a>
+            </div>
+
+            <div class="details">
+
+                <div class="name">
+
+                    <a href="{{ url(field_type.value.route('view')) }}" target="_blank">
+                        {{ field_type.value.name }}
+                    </a>
+
+                    <small class="text-muted">
+                        {{ field_type.value.readable_size }}
+                    </small>
+                </div>
+
+                <div class="location">
+                    {{ field_type.value.location }}
+                </div>
+
+                <div class="controls">
+                    <a href="{{ field_type.value.route('view') }}" class="btn btn-xs btn-info" target="_blank">
+                        {{ trans('streams::button.view') }}
+                    </a>
+
+                    <a href="{{ field_type.value.route('download') }}" class="btn btn-xs btn-primary" target="_blank">
+                        {{ trans('streams::button.download') }}
+                    </a>
+
+                    <a href="{{ url('admin/files/edit/' ~ field_type.value.id) }}" class="btn btn-xs btn-warning" target="_blank">
+                        {{ trans('streams::button.edit') }}
+                    </a>
+
+                    <a data-remove="upload" class="btn btn-xs btn-danger">
+                        {{ trans('anomaly.field_type.upload::button.remove') }}
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 {% endif %}

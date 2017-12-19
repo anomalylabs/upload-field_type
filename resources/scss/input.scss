@@ -1,0 +1,34 @@
+.upload-field_type {
+
+    .attachment {
+        margin-top: 1rem;
+        border-radius: 3px;
+        display: inline-block;
+        border: 1px solid $gray-lighter;
+
+        .preview {
+            padding: 2rem;
+            display: inline-block;
+            background: $gray-lighter;
+        }
+
+        .details {
+            padding: 0 2rem;
+            display: inline-block;
+            vertical-align: middle;
+
+            .name {
+                font-weight: bold;
+            }
+
+            .location {
+                color: $text-muted;
+                font-size: $font-size-sm;
+            }
+
+            .controls {
+                margin-top: 1rem;
+            }
+        }
+    }
+}
