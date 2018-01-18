@@ -4,12 +4,12 @@
         margin-top: 1rem;
         border-radius: 3px;
         display: inline-block;
-        border: 1px solid $gray-lighter;
+        border: 1px solid #eceeef;
 
         .preview {
             padding: 2rem;
             display: inline-block;
-            background: $gray-lighter;
+            background: #eceeef;
         }
 
         .details {
@@ -22,8 +22,8 @@
             }
 
             .location {
-                color: $text-muted;
-                font-size: $font-size-sm;
+                color: #888888;
+                font-size: .875rem;
             }
 
             .controls {
