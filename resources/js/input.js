@@ -11,11 +11,13 @@
         let file = wrapper.querySelector('input[type="hidden"]');
         let remove = wrapper.querySelector('[data-remove="upload"]');
 
-        remove.addEventListener('click', function (event) {
+        if (remove) {
+            remove.addEventListener('click', function () {
 
-            file.value = '';
+                file.value = '';
 
-            attachment.remove();
-        });
+                attachment.remove();
+            });
+        }
     });
 })(window, document);
