@@ -211,7 +211,7 @@ class UploadFieldType extends FieldType
      */
     public function getSize($key)
     {
-        preg_match('/([0-9]*)(K|M|G)/im', ini_get($key), $matches);
+        preg_match('/([0-9]*)(K|M|G)?/im', ini_get($key), $matches);
         return $matches[2] === 'K' ? $matches[1] / 1024 : $matches[2] === 'G' ? $matches[1] * 1024 : $matches[1];
     }
 }
