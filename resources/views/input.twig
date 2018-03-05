@@ -52,9 +52,12 @@
                         {{ trans('streams::button.download') }}
                     </a>
 
-                    <a href="{{ url('admin/files/edit/' ~ field_type.value.id) }}" class="btn btn-xs btn-warning" target="_blank">
-                        {{ trans('streams::button.edit') }}
-                    </a>
+                    {% if user().hasPermission('anomaly.module.files::files.write') %}
+                        <a href="{{ url('admin/files/edit/' ~ field_type.value.id) }}" class="btn btn-xs btn-warning"
+                           target="_blank">
+                            {{ trans('streams::button.edit') }}
+                        </a>
+                    {% endif %}
 
                     <a data-remove="upload" class="btn btn-xs btn-danger">
                         {{ trans('anomaly.field_type.upload::button.remove') }}
