@@ -1,6 +1,6 @@
 (function (window, document) {
 
-    let fields = Array.from(
+    let fields = Array.prototype.slice.call(
         document.querySelectorAll('input[data-provides="anomaly.field_type.upload"]')
     );
 
