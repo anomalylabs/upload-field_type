@@ -124,8 +124,8 @@ class UploadFieldType extends FieldType
     {
         $config = parent::getConfig();
 
-        $post = str_replace('M', '', ini_get('post_max_size'));
-        $file = str_replace('M', '', ini_get('upload_max_filesize'));
+        $post = $this->getSize('post_max_size');
+        $file = $this->getSize('upload_max_filesize');
 
         $server = $file > $post ? $post : $file;
 
@@ -201,5 +201,17 @@ class UploadFieldType extends FieldType
     public function getColumnName()
     {
         return parent::getColumnName() . '_id';
+    }
+
+    /**
+     * Get php.ini value and convert it to Mb if needed.
+     *
+     * @param $key
+     * @return float|int
+     */
+    public function getSize($key)
+    {
+        preg_match('/([0-9]*)(K|M|G)?/im', ini_get($key), $matches);
+        return $matches[2] === 'G' ? $matches[1] * 1024 : $matches[1] === 'M' ? $matches[1] : $matches[2] === 'K' ? $matches[1] / 1024 : $matches[1] / (1024 * 1024);
     }
 }
