@@ -209,10 +209,22 @@ class UploadFieldType extends FieldType
      * @param $key
      * @return float|int
      */
-    public function getSize($key)
+    protected function getSize($key)
     {
         preg_match('/([0-9]*)(K|M|G)?/im', ini_get($key), $matches);
 
-        return $matches[2] === 'G' ? $matches[1] * 1024 : $matches[1] === 'M' ? $matches[1] : $matches[2] === 'K' ? $matches[1] / 1024 : $matches[1] / (1024 * 1024);
+        if ($matches[2] === 'G') {
+            return $matches[1] * 1024;
+        }
+
+        if ($matches[2] === 'M') {
+            return $matches[1];
+        }
+
+        if ($matches[2] === 'K') {
+            return $matches[1] / 1024;
+        }
+
+        return $matches[1] / (1024 * 1024);
     }
 }
