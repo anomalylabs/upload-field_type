@@ -2,6 +2,7 @@
 
 use Anomaly\FilesModule\Folder\Contract\FolderRepositoryInterface;
 use Anomaly\Streams\Platform\Ui\Form\FormBuilder;
+use Anomaly\UploadFieldType\UploadFieldType;
 
 /**
  * Class ValidateFolder
@@ -16,15 +17,12 @@ class ValidateFolder
     /**
      * Handle the validation.
      *
-     * @param FormBuilder               $builder
      * @param FolderRepositoryInterface $folders
      * @param                           $attribute
      * @return bool
      */
-    public function handle(FormBuilder $builder, FolderRepositoryInterface $folders, $attribute)
+    public function handle(FolderRepositoryInterface $folders, UploadFieldType $fieldType)
     {
-        $fieldType = $builder->getFormField($attribute);
-
         $folder = array_get($fieldType->getConfig(), 'folder');
 
         if (is_numeric($folder) && !$folders->find($folder)) {
