@@ -9,7 +9,10 @@ return [
         'type'     => 'anomaly.field_type.select',
         'config'   => [
             'options' => function (FolderRepositoryInterface $folders) {
-                return $folders->all()->pluck('name', 'id')->all();
+                return $folders
+                    ->all()
+                    ->pluck('name', 'id')
+                    ->all();
             },
         ],
     ],
