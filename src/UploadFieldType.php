@@ -28,6 +28,13 @@ class UploadFieldType extends FieldType
     protected $class = '';
 
     /**
+     * The input type.
+     *
+     * @var string
+     */
+    protected $inputType = 'file';
+
+    /**
      * The underlying database column type
      *
      * @var string
