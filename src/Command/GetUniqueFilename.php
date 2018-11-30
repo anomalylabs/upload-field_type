@@ -1,5 +1,6 @@
 <?php namespace Anomaly\UploadFieldType\Command;
 
+use Anomaly\FilesModule\File\FileSanitizer;
 use Anomaly\FilesModule\Folder\Contract\FolderInterface;
 use Illuminate\Http\UploadedFile;
 use League\Flysystem\MountManager;
@@ -13,16 +14,19 @@ use League\Flysystem\MountManager;
  */
 class GetUniqueFilename
 {
+
     protected $manager;
+
     protected $folder;
+
     protected $upload;
 
     /**
      * GetUniqueFilename constructor.
      *
-     * @param MountManager    $manager
+     * @param MountManager $manager
      * @param FolderInterface $folder
-     * @param UploadedFile    $upload
+     * @param UploadedFile $upload
      */
     public function __construct(MountManager $manager, FolderInterface $folder, UploadedFile $upload)
     {
@@ -43,6 +47,9 @@ class GetUniqueFilename
         $fileExtension  = $this->upload->getClientOriginalExtension();
         $incrementValue = 1;
 
+        // Protect against dangerous file names.
+        $filename = FileSanitizer::clean($filename);
+
         // Increment the value until the manager says it doesn't have that path.
         while ($this->manager->has($this->folder->path($filename))) {
 
@@ -50,7 +57,7 @@ class GetUniqueFilename
             $filename = str_replace(
                 '.' . $fileExtension,
                 '-' . $incrementValue . '.' . $fileExtension,
-                $this->upload->getClientOriginalName()
+                $filename
             );
 
             $incrementValue++;
