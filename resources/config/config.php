@@ -1,7 +1,6 @@
 <?php
 
 use Anomaly\FilesModule\Folder\Contract\FolderRepositoryInterface;
-use Anomaly\UploadFieldType\UploadFieldType;
 
 return [
     'folder' => [
@@ -26,18 +25,8 @@ return [
         'type'     => 'anomaly.field_type.integer',
         'required' => true,
         'config'   => [
-            'default_value' => function (UploadFieldType $type) {
-                $post = $type->getSize('post_max_size');
-                $file = $type->getSize('upload_max_filesize');
-
-                return $file > $post ? $post : $file;
-            },
-            'max'           => function (UploadFieldType $type) {
-                $post = $type->getSize('post_max_size');
-                $file = $type->getSize('upload_max_filesize');
-
-                return $file > $post ? $post : $file;
-            },
+            'default_value' => max_upload_size(),
+            'max'           => max_upload_size(),
             'min'           => 1,
         ],
     ],
