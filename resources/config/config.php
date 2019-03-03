@@ -1,18 +1,11 @@
 <?php
 
-use Anomaly\FilesModule\Folder\Contract\FolderRepositoryInterface;
-
 return [
     'folder' => [
         'required' => true,
         'type'     => 'anomaly.field_type.select',
         'config'   => [
-            'options' => function (FolderRepositoryInterface $folders) {
-                return $folders
-                    ->all()
-                    ->pluck('name', 'id')
-                    ->all();
-            },
+            'handler' => \Anomaly\UploadFieldType\Support\Config\FolderHandler::class,
         ],
     ],
     'image'  => [
