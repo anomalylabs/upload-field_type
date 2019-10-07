@@ -1,6 +1,8 @@
 {{ asset_add('styles.css', 'anomaly.field_type.upload::css/uppy.css') }}
 {{ asset_add('scripts.js', 'anomaly.field_type.upload::js/uppy.js') }}
 
+<div class="upload"></div>
+
 <input type="file" name="{{ field_type.input_name }}" {{ html_attributes(field_type.attributes) }} {{ field_type.disabled ? 'disabled' }} {{ field_type.readonly ? 'readonly' }}>
 
 <input type="hidden" name="{{ field_type.input_name }}_id" value="{{ field_type.value.id }}" {{ field_type.disabled ? 'disabled' }} {{ field_type.readonly ? 'readonly' }}>
