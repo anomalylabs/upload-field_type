@@ -12,6 +12,7 @@ let mix = require('laravel-mix');
  */
 
 mix
+    .js('resources/js/src/upload.js', 'resources/js')
     .sass('resources/scss/input.scss', 'resources/css')
     .options({
         processCssUrls: false
