@@ -1,9 +1,19 @@
-{{ asset_add('styles.css', 'anomaly.field_type.upload::css/uppy.css') }}
-{{ asset_add('scripts.js', 'anomaly.field_type.upload::js/uppy.js') }}
+{{ asset_add('styles.css', 'anomaly.field_type.upload::css/input.css') }}
+{{ asset_add('scripts.js', 'anomaly.field_type.upload::js/input.js') }}
 
-<input type="file" name="{{ field_type.input_name }}" {{ html_attributes(field_type.attributes) }} {{ field_type.disabled ? 'disabled' }} {{ field_type.readonly ? 'readonly' }}>
+<input
+        type="file"
+        name="{{ field_type.input_name }}"
+        {{ html_attributes(field_type.attributes) }}
+        {{ field_type.disabled ? 'disabled' }}
+        {{ field_type.readonly ? 'readonly' }}>
 
-<input type="hidden" name="{{ field_type.input_name }}_id" value="{{ field_type.value.id }}" {{ field_type.disabled ? 'disabled' }} {{ field_type.readonly ? 'readonly' }}>
+<input
+        type="hidden"
+        name="{{ field_type.input_name }}_id"
+        value="{{ field_type.value.id }}"
+        {{ field_type.disabled ? 'disabled' }}
+        {{ field_type.readonly ? 'readonly' }}>
 
 {% if field_type.value %}
     <div>
@@ -43,7 +53,8 @@
                     </a>
 
                     {% if user().hasPermission('anomaly.module.files::files.write') %}
-                        <a href="{{ url('admin/files/edit/' ~ field_type.value.id) }}" class="btn btn-xs btn-warning" target="_blank">
+                        <a href="{{ url('admin/files/edit/' ~ field_type.value.id) }}" class="btn btn-xs btn-warning"
+                           target="_blank">
                             {{ trans('streams::button.edit') }}
                         </a>
                     {% endif %}
