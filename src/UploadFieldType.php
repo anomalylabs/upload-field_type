@@ -157,7 +157,7 @@ class UploadFieldType extends FieldType
      */
     public function getPostValue($default = null)
     {
-        return $this->dispatch(new PerformUpload($this));
+        return dispatch_sync(new PerformUpload($this));
     }
 
     /**
@@ -172,7 +172,7 @@ class UploadFieldType extends FieldType
      */
     public function getRepopulateValue($default = null)
     {
-        return $this->dispatch(new GetFile(array_get($_POST, $this->getInputName() . '_id', $default)));
+        return dispatch_sync(new GetFile(array_get($_POST, $this->getInputName() . '_id', $default)));
     }
 
     /**
@@ -183,7 +183,7 @@ class UploadFieldType extends FieldType
      */
     public function getValidationValue($default = null)
     {
-        return $this->dispatch(new GetUploadFile($this));
+        return dispatch_sync(new GetUploadFile($this));
     }
 
     /**

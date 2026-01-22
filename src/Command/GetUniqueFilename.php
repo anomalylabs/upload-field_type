@@ -2,8 +2,8 @@
 
 use Anomaly\FilesModule\File\FileSanitizer;
 use Anomaly\FilesModule\Folder\Contract\FolderInterface;
+use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Http\UploadedFile;
-use League\Flysystem\MountManager;
 
 /**
  * Class GetUniqueFilename
@@ -24,11 +24,11 @@ class GetUniqueFilename
     /**
      * GetUniqueFilename constructor.
      *
-     * @param MountManager $manager
+     * @param FilesystemManager $manager
      * @param FolderInterface $folder
      * @param UploadedFile $upload
      */
-    public function __construct(MountManager $manager, FolderInterface $folder, UploadedFile $upload)
+    public function __construct(FilesystemManager $manager, FolderInterface $folder, UploadedFile $upload)
     {
         $this->manager = $manager;
         $this->folder  = $folder;
@@ -36,7 +36,7 @@ class GetUniqueFilename
     }
 
     /**
-     * Get a unique filename from the mount manager.
+     * Get a unique filename from the filesystem manager.
      *
      * @return mixed|null|string
      */
@@ -50,8 +50,12 @@ class GetUniqueFilename
         // Protect against dangerous file names.
         $filename = FileSanitizer::clean($filename);
 
-        // Increment the value until the manager says it doesn't have that path.
-        while ($this->manager->has($this->folder->path($filename))) {
+        // Get the disk from the folder.
+        $disk = $this->folder->getDisk();
+        $filesystem = $this->manager->disk($disk->getSlug());
+
+        // Increment the value until the filesystem says it doesn't have that path.
+        while ($filesystem->fileExists($this->folder->getSlug() . '/' . $filename)) {
 
             // Replace the filename extension with a number before the extension.
             $filename = str_replace(
