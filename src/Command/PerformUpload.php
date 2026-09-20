@@ -2,9 +2,9 @@
 
 use Anomaly\FilesModule\File\Contract\FileInterface;
 use Anomaly\FilesModule\File\Contract\FileRepositoryInterface;
+use Anomaly\FilesModule\File\FileUploader;
 use Anomaly\FilesModule\Folder\Command\GetFolder;
 use Anomaly\UploadFieldType\UploadFieldType;
-use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Http\Request;
 
 /**
@@ -38,12 +38,12 @@ class PerformUpload
      * Handle the command.
      *
      * @param FileRepositoryInterface $files
-     * @param FilesystemManager       $manager
+     * @param FileUploader            $uploader
      * @param Request                 $request
      *
      * @return null|FileInterface
      */
-    public function handle(FileRepositoryInterface $files, FilesystemManager $manager, Request $request)
+    public function handle(FileRepositoryInterface $files, FileUploader $uploader, Request $request)
     {
         $upload = $request->file($this->fieldType->getInputName());
         $value  = $request->get($this->fieldType->getInputName() . '_id');
@@ -71,19 +71,16 @@ class PerformUpload
             return null;
         }
 
-        // Get a unique filename just in case there is one already in the filesystem.
-        $filename = dispatch_sync(new GetUniqueFilename($manager, $folder, $upload));
-
-        // Get the disk from the folder and write the file.
-        $disk = $folder->getDisk();
-        $path = $folder->getSlug() . '/' . $filename;
-
-        // Write the file using the disk's filesystem.
-        $file = $manager->disk($disk->getSlug())->writeStream(
-            $path,
-            fopen($upload->getRealPath(), 'r+')
-        );
-
-        return $file;
+        /**
+         * Upload through the Files module so the folder's allowed types
+         * and the file's contents are validated before anything is written.
+         * The uploader throws when the type is not allowed; treat that as
+         * no usable upload rather than letting it surface as a 500.
+         */
+        try {
+            return $uploader->upload($upload, $folder);
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 }

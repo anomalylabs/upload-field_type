@@ -25,7 +25,7 @@
         "email": "support@pyrocms.com"
     },
     "require": {
-        "anomaly/files-module": "^2.7",
+        "anomaly/files-module": "^2.7.2",
         "anomaly/streams-platform": "^1.10"
     },
     "autoload": {
