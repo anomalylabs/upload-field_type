@@ -172,7 +172,20 @@ class UploadFieldType extends FieldType
      */
     public function getRepopulateValue($default = null)
     {
-        return dispatch_sync(new GetFile(array_get($_POST, $this->getInputName() . '_id', $default)));
+        /**
+         * Repopulate only with the file already stored on this field, and
+         * only when an id was posted (an empty one means it was removed).
+         * The posted number is never resolved directly - that would let a
+         * failed submission echo back any file by id.
+         */
+        if (!array_get($_POST, $this->getInputName() . '_id')) {
+            return $default;
+        }
+
+        $entry   = $this->getEntry();
+        $current = $entry ? $entry->{$this->getColumnName()} : null;
+
+        return $current ? dispatch_sync(new GetFile($current)) : $default;
     }
 
     /**
@@ -193,8 +206,19 @@ class UploadFieldType extends FieldType
      */
     public function isRequired()
     {
+        /**
+         * An id posted for this field satisfies the requirement only when
+         * it is the file already stored here; a bogus id must not mark a
+         * required field as filled.
+         */
         if ($_POST && $value = array_get($_POST, $this->getInputName() . '_id')) {
-            return false;
+
+            $entry   = $this->getEntry();
+            $current = $entry ? $entry->{$this->getColumnName()} : null;
+
+            if ($current && $value == $current) {
+                return false;
+            }
         }
 
         return parent::isRequired();

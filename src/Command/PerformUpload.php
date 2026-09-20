@@ -58,8 +58,17 @@ class PerformUpload
                 return null;
             }
 
+            /**
+             * The _id input exists only to preserve the file already
+             * stored on this field across a save that does not upload a
+             * new one. Honour it only when it matches the current value;
+             * any other id is not something this field can select.
+             */
+            $entry   = $this->fieldType->getEntry();
+            $current = $entry ? $entry->{$this->fieldType->getColumnName()} : null;
+
             /* @var FileInterface $file */
-            if ($file = $files->find($value)) {
+            if ($current && $value == $current && $file = $files->find($current)) {
                 return $file;
             }
 
